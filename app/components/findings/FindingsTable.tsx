@@ -6,6 +6,7 @@ import { toast } from "~/components/ui/Toast";
 import { SEVERITIES, cap, type Finding, type Severity } from "~/data/findings";
 import type { FindingsFilter } from "~/data/overview";
 import { playOnce, prefersReducedMotion } from "~/lib/motion";
+import { usePrefs } from "~/lib/ui-store";
 
 export const CHECK = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} style={{ width: 11, height: 11 }}>
@@ -42,6 +43,7 @@ export function FindingsTable({ rows, filter, listKey, selected, isResolved, onF
   const [cols, setCols] = useState<Record<ColKey, boolean>>({ type: true, asset: true, age: true });
   const [exporting, setExporting] = useState<"idle" | "busy" | "done">("idle");
   const rm = prefersReducedMotion();
+  const { compact } = usePrefs();
 
   const template = ["44px", "2.2fr", "1fr", ...(Object.keys(COL_W) as ColKey[]).filter((k) => cols[k]).map((k) => COL_W[k])];
   const hidden = (Object.keys(cols) as ColKey[]).filter((k) => !cols[k]).map((k) => ` h-${k}`).join("");
@@ -81,7 +83,7 @@ export function FindingsTable({ rows, filter, listKey, selected, isResolved, onF
   return (
     <Card
       title="Details"
-      className={`det${hidden}`}
+      className={`det${hidden}${compact ? " compact" : ""}`}
       delay={delay}
       icon={
         <svg viewBox="0 0 24 24" fill="#fff">
