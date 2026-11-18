@@ -5,7 +5,7 @@ export default [
     index("routes/overview.tsx"),
     // Not ported yet: one placeholder module, distinguished by route id.
     route("findings", "routes/findings.tsx"),
-    route("posture", "routes/coming-soon.tsx", { id: "posture" }),
+    route("posture", "routes/posture.tsx"),
     route("chat", "routes/coming-soon.tsx", { id: "chat" }),
   ]),
 ] satisfies RouteConfig;

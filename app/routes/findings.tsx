@@ -102,7 +102,7 @@ export default function Findings() {
       <div className={`fd${selected ? " open" : ""}`}>
         <div className="fl">
           <h1 className="rv" style={{ marginBottom: 6 }}>Findings</h1>
-          <TotalsCard {...t} delay={0.06} />
+          <TotalsCard total={t.total} crit={t.crit} high={t.high} res={t.res} delay={0.06} />
           <FindingsTable
             rows={rows}
             filter={filter}
