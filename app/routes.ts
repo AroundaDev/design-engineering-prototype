@@ -1,3 +1,11 @@
-import { type RouteConfig, index } from "@react-router/dev/routes";
+import { type RouteConfig, index, layout, route } from "@react-router/dev/routes";
 
-export default [index("routes/home.tsx")] satisfies RouteConfig;
+export default [
+  layout("routes/shell.tsx", [
+    index("routes/overview.tsx"),
+    // Not ported yet: one placeholder module, distinguished by route id.
+    route("findings", "routes/coming-soon.tsx", { id: "findings" }),
+    route("posture", "routes/coming-soon.tsx", { id: "posture" }),
+    route("chat", "routes/coming-soon.tsx", { id: "chat" }),
+  ]),
+] satisfies RouteConfig;
