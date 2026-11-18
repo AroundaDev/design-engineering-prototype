@@ -4,6 +4,7 @@ import { Stage } from "~/components/shell/Stage";
 import { TopBar } from "~/components/shell/TopBar";
 import { Rail } from "~/components/shell/Rail";
 import { Toaster } from "~/components/ui/Toast";
+import { NarrowNotice, Shortcuts } from "~/components/shell/Shortcuts";
 
 const RAIL_KEY = "secproto-rail";
 
@@ -40,27 +41,31 @@ export default function Shell() {
   }
 
   return (
-    <Stage>
-      <TopBar />
-      <div className={`shell${collapsed ? " collapsed" : ""}`}>
-        <Rail collapsed={collapsed} />
-        <main className="main">
-          <Outlet />
-        </main>
-        <button
-          className="rtog"
-          type="button"
-          aria-label={collapsed ? "Show sidebar" : "Hide sidebar"}
-          aria-controls="rail"
-          aria-expanded={!collapsed}
-          onClick={toggle}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 6l-6 6 6 6" />
-          </svg>
-        </button>
-      </div>
-      <Toaster />
-    </Stage>
+    <>
+      <Stage>
+        <TopBar />
+        <div className={`shell${collapsed ? " collapsed" : ""}`}>
+          <Rail collapsed={collapsed} />
+          <main className="main">
+            <Outlet />
+          </main>
+          <button
+            className="rtog"
+            type="button"
+            aria-label={collapsed ? "Show sidebar" : "Hide sidebar"}
+            aria-controls="rail"
+            aria-expanded={!collapsed}
+            onClick={toggle}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 6l-6 6 6 6" />
+            </svg>
+          </button>
+        </div>
+        <Toaster />
+        <Shortcuts />
+      </Stage>
+      <NarrowNotice />
+    </>
   );
 }

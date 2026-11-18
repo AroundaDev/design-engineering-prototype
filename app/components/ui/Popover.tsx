@@ -12,6 +12,11 @@ type Props = {
   left?: boolean;
   dx?: number;
   style?: CSSProperties;
+  /** Controlled mode: the parent owns open/closed (e.g. open on input focus). */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Extra class on the anchor wrapper. */
+  wrapClassName?: string;
   /** Popover content; `close` dismisses it. */
   children: (close: () => void) => ReactNode;
 };
@@ -20,8 +25,14 @@ type Props = {
  * Anchored dropdown panel (.pv), rendered into the scaled #app canvas so no
  * card or input box clips it. Closes on outside press or Escape.
  */
-export function Popover({ trigger, id, up, left, dx = 0, style, children }: Props) {
-  const [open, setOpen] = useState(false);
+export function Popover({ trigger, id, up, left, dx = 0, style, open: openProp, onOpenChange, wrapClassName, children }: Props) {
+  const [openState, setOpenState] = useState(false);
+  const open = openProp ?? openState;
+  const setOpen = (v: boolean | ((o: boolean) => boolean)) => {
+    const next = typeof v === "function" ? v(open) : v;
+    if (openProp === undefined) setOpenState(next);
+    onOpenChange?.(next);
+  };
   const [pos, setPos] = useState<CSSProperties>({});
   const [host, setHost] = useState<HTMLElement | null>(null);
   const wrap = useRef<HTMLSpanElement>(null);
@@ -55,11 +66,12 @@ export function Popover({ trigger, id, up, left, dx = 0, style, children }: Prop
       document.removeEventListener("pointerdown", onDown);
       document.removeEventListener("keydown", onKey);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const close = () => setOpen(false);
   return (
-    <span className="pvwrap" ref={wrap}>
+    <span className={`pvwrap${wrapClassName ? ` ${wrapClassName}` : ""}`} ref={wrap}>
       {trigger({ open, toggle: () => setOpen((o) => !o) })}
       {host &&
         createPortal(
