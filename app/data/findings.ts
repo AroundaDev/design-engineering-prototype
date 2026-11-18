@@ -136,5 +136,16 @@ export function totals(resolvedIds: string[]) {
   const r = resolvedIds.map(findingById).filter((f): f is Finding => !!f);
   const crit = r.filter((f) => f.sev === "critical").length;
   const high = r.filter((f) => f.sev === "high").length;
-  return { total: 4389, crit: 312 - crit, high: 1203 - high, res: 1843 + r.length };
+  return {
+    total: 4389,
+    crit: 312 - crit,
+    high: 1203 - high,
+    res: 1843 + r.length,
+    // Posture center
+    active: 1466 - r.length,
+    activeCrit: 128 - crit,
+    activeHigh: 612 - high,
+    fixed: 612 + r.length,
+    resolved: 1055 + r.length,
+  };
 }
