@@ -4,7 +4,7 @@ export default [
   layout("routes/shell.tsx", [
     index("routes/overview.tsx"),
     // Not ported yet: one placeholder module, distinguished by route id.
-    route("findings", "routes/coming-soon.tsx", { id: "findings" }),
+    route("findings", "routes/findings.tsx"),
     route("posture", "routes/coming-soon.tsx", { id: "posture" }),
     route("chat", "routes/coming-soon.tsx", { id: "chat" }),
   ]),

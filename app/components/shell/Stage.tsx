@@ -8,7 +8,8 @@ const PAD_Y = 32;
 const PAD_X = 24;
 
 /** Elements that get a tap ripple from the pointer position. */
-const RIPPLE = ".ri,.irow,.brow,.stage a,.tabs button,.askcard,.pill.bell,.ib";
+const RIPPLE =
+  ".ri,.irow,.brow,.stage a,.tabs button,.askcard,.pill.bell,.ib,.tr,.btn,.chip,.dtabs button,.menu button";
 
 /**
  * Fixed 1440×900 canvas scaled to fit the viewport (with edge padding), as in the prototype.
