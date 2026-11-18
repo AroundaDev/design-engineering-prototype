@@ -3,6 +3,7 @@ import { Outlet } from "react-router";
 import { Stage } from "~/components/shell/Stage";
 import { TopBar } from "~/components/shell/TopBar";
 import { Rail } from "~/components/shell/Rail";
+import { Toaster } from "~/components/ui/Toast";
 
 const RAIL_KEY = "secproto-rail";
 
@@ -59,6 +60,7 @@ export default function Shell() {
           </svg>
         </button>
       </div>
+      <Toaster />
     </Stage>
   );
 }
