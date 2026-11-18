@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useSearchParams } from "react-router";
 import type { Route } from "./+types/findings";
-import { FindingDrawer } from "~/components/findings/FindingDrawer";
+import { FindingDrawer, TABS, type Tab } from "~/components/findings/FindingDrawer";
 import { FindingsTable } from "~/components/findings/FindingsTable";
 import { TotalsCard } from "~/components/findings/TotalsCard";
 import { FEATURED_ID, FINDINGS, SEVERITIES, findingById, totals, type Finding, type Severity } from "~/data/findings";
@@ -35,6 +35,8 @@ export default function Findings() {
   const store = useFindingsState();
   const filter = readFilter(params);
   const openId = params.get("open");
+  const tabParam = params.get("tab") as Tab | null;
+  const initialTab = tabParam && TABS.includes(tabParam) ? tabParam : undefined;
   const selected = findingById(openId) ?? null;
   const isResolved = (id: string) => !!store.resolved[id];
 
@@ -115,7 +117,7 @@ export default function Findings() {
           />
         </div>
         <aside className="drawer" aria-label="Finding details" aria-hidden={!selected}>
-          {shown.current && <FindingDrawer f={shown.current} store={store} onClose={() => update({ open: null })} />}
+          {shown.current && <FindingDrawer f={shown.current} store={store} initialTab={initialTab} onClose={() => update({ open: null })} />}
         </aside>
       </div>
     </section>

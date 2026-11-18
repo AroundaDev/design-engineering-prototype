@@ -6,8 +6,8 @@ import { addComment, reopen, resolve, type State } from "~/lib/findings-store";
 import { playOnce, prefersReducedMotion } from "~/lib/motion";
 import { SevTag } from "./FindingsTable";
 
-type Tab = "overview" | "evidence" | "activity" | "comments";
-const TABS: Tab[] = ["overview", "evidence", "activity", "comments"];
+export type Tab = "overview" | "evidence" | "activity" | "comments";
+export const TABS: Tab[] = ["overview", "evidence", "activity", "comments"];
 
 const STEP_ICONS = {
   commit: <><path d="M3 12h5M16 12h5" /><circle cx="12" cy="12" r="3.5" /></>,
@@ -22,12 +22,12 @@ function codeLine(l: string) {
   return l.split(/(".*?")/g).map((part, i) => (i % 2 ? <span key={i} className="s">{part}</span> : part));
 }
 
-type Props = { f: Finding; store: State; onClose: () => void };
+type Props = { f: Finding; store: State; onClose: () => void; initialTab?: Tab };
 
 /** Right-hand detail panel for the selected finding. */
-export function FindingDrawer({ f, store, onClose }: Props) {
+export function FindingDrawer({ f, store, onClose, initialTab = "overview" }: Props) {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("overview");
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [lit, setLit] = useState(0);
   const [menu, setMenu] = useState(false);
   const [draft, setDraft] = useState("");
@@ -37,7 +37,7 @@ export function FindingDrawer({ f, store, onClose }: Props) {
 
   // A new finding resets the tab and replays the detection flow, step by step.
   useEffect(() => {
-    setTab("overview");
+    setTab(initialTab);
     setMenu(false);
     setDraft("");
     if (prefersReducedMotion()) {
@@ -47,6 +47,7 @@ export function FindingDrawer({ f, store, onClose }: Props) {
     setLit(0);
     const ids = [0, 1, 2, 3].map((i) => setTimeout(() => setLit(i + 1), 250 + i * 260));
     return () => ids.forEach(clearTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [f.id]);
 
   useEffect(() => {
