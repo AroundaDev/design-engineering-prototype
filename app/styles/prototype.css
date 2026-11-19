@@ -59,26 +59,24 @@ input {
   border-radius: 8px;
 }
 
-/* ---------- stage: fixed 1440x900 canvas scaled to fit ---------- */
+/* ---------- stage: full-viewport canvas (sized and scaled in Stage.tsx) ---------- */
 #stage {
   position: fixed;
   inset: 0;
   overflow: hidden;
 }
-/* Pinned to the viewport center; Stage.tsx sets translate + scale so the
-   whole canvas always fits inside the viewport minus its padding. */
+/* Stage.tsx sets width/height (viewport ÷ scale) and scale(); scaling from the
+   top-left corner makes the canvas cover the viewport exactly. */
 #app {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 0;
+  top: 0;
   width: 1440px;
   height: 900px;
-  transform: translate(-50%, -50%);
-  transform-origin: center;
+  transform-origin: 0 0;
   flex: none;
   overflow: hidden;
   overflow: clip; /* clips like hidden but can never be scrolled by focus */
-  border-radius: 18px;
   background:
     radial-gradient(900px 260px at 30% -60px, rgba(46, 230, 214, 0.16), transparent 70%),
     radial-gradient(700px 300px at 85% -80px, rgba(255, 138, 31, 0.1), transparent 70%),

@@ -3,11 +3,8 @@ import { Card } from "~/components/ui/Card";
 import { RANGES, type RangeKey } from "~/data/overview";
 import { appScale, tween } from "~/lib/motion";
 
-const W = 440;
-const H = 200;
 const MAX = 15;
 const RESOLVED_LEVEL = 1.1;
-const y = (v: number) => H - (v / MAX) * (H - 20);
 
 type Hover = { px: number; py: number; tx: number; value: number };
 
@@ -60,6 +57,20 @@ export function OpenVsResolved({ run, delay }: { run: boolean; delay: number }) 
   const [reveal, setReveal] = useState(0); // 0..1 clip width
   const [hover, setHover] = useState<Hover | null>(null);
   const chartRef = useRef<HTMLDivElement>(null);
+  // Drawn at the chart's real (unscaled) size, so text and strokes never
+  // stretch when the canvas changes shape. 440×200 is the design size.
+  const [{ W, H }, setSize] = useState({ W: 440, H: 200 });
+  useLayoutEffect(() => {
+    const el = chartRef.current!;
+    const measure = () => {
+      if (el.offsetWidth && el.offsetHeight) setSize({ W: el.offsetWidth, H: el.offsetHeight });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const y = (v: number) => H - (v / MAX) * (H - 20);
 
   const data = RANGES.find((r) => r.key === range)!;
 
@@ -69,7 +80,8 @@ export function OpenVsResolved({ run, delay }: { run: boolean; delay: number }) 
     const area = `${line} L${W} ${H} L0 ${H}Z`;
     const peak = pts.reduce((a, p) => (p[1] < a[1] ? p : a));
     return { line, area, peak };
-  }, [data]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, W, H]);
 
   // Draw the line in from the left on entrance and on every range change.
   useEffect(() => {
@@ -112,7 +124,7 @@ export function OpenVsResolved({ run, delay }: { run: boolean; delay: number }) 
         onPointerDown={onPointer}
         onPointerLeave={() => setHover(null)}
       >
-        <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label={`Open findings over ${data.label}`}>
+        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Open findings over ${data.label}`}>
           <defs>
             <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor="#FF7A1A" stopOpacity=".55" />
