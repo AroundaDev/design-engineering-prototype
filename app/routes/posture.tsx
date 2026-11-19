@@ -106,7 +106,7 @@ export default function Posture() {
   }
 
   return (
-    <section className={`screen${entered ? " in" : ""}`} aria-label="Security posture center">
+    <section id="s-posture" className={`screen${entered ? " in" : ""}`} aria-label="Security posture center">
       <div className="po-bg" />
       <div className="rv" style={{ position: "relative", zIndex: 2 }}>
         <p className="crumb">
@@ -184,7 +184,7 @@ export default function Posture() {
           )}
         </svg>
 
-        <div className="side">
+        <div className="side" id="side">
           <div className="sh rv" style={{ transitionDelay: ".3s" } as CSSProperties}>
             <span className="ci">
               <svg viewBox="0 0 24 24" fill="#FFB347">

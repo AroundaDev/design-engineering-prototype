@@ -4,7 +4,7 @@ import { Stage } from "~/components/shell/Stage";
 import { TopBar } from "~/components/shell/TopBar";
 import { Rail } from "~/components/shell/Rail";
 import { Toaster } from "~/components/ui/Toast";
-import { NarrowNotice, Shortcuts } from "~/components/shell/Shortcuts";
+import { Shortcuts } from "~/components/shell/Shortcuts";
 
 const RAIL_KEY = "secproto-rail";
 
@@ -65,7 +65,6 @@ export default function Shell() {
         <Toaster />
         <Shortcuts />
       </Stage>
-      <NarrowNotice />
     </>
   );
 }
