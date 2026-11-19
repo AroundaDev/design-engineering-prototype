@@ -208,7 +208,7 @@ export default function Chat() {
   }
 
   return (
-    <section className="screen in" aria-label="AI chat">
+    <section id="s-chat" className="screen in" aria-label="AI chat">
       <div className="chat-bg" />
       <div className="chat-h" ref={head}>
         <h1>AI Chat</h1>

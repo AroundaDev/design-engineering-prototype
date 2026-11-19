@@ -1777,6 +1777,150 @@ h1 {
 .chord.on{opacity:1;transform:translate(-50%,0)}
 .chord kbd{font:500 11px Inter,sans-serif;background:rgba(255,255,255,.1);border-radius:5px;padding:2px 6px;color:var(--t1);margin:0 2px 0 6px}
 
-#narrow{position:fixed;inset:0;display:grid;place-items:center;text-align:center;padding:32px;background:var(--bg);z-index:100;font-size:15px;line-height:1.5;color:var(--t2)}
-#narrow b{display:block;color:var(--t1);font-size:20px;font-weight:500;margin-bottom:8px}
-#narrow button{margin-top:18px;height:44px;padding:0 18px;border-radius:999px;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px var(--line2)}
+/* =====================================================================
+   Phone layout below 760px (html.m, set by Stage). Ported from the
+   prototype's "mobile-layer" stylesheet.
+   ===================================================================== */
+html.m,html.m body{overflow:hidden}
+html.m #stage{position:fixed;inset:0;display:block}
+html.m #app{left:0;top:0;width:100%!important;height:100%!important;border-radius:0;transform:none!important}
+html.m #app:before{height:70px}
+/* top bar */
+html.m .top{left:12px;right:12px;top:calc(10px + env(safe-area-inset-top,0px));gap:8px;justify-content:flex-start}
+html.m .top .bell{margin-left:auto}
+html.m .top .pill{height:42px}
+html.m .search{flex:none;width:auto;min-width:0;padding-left:12px}
+html.m .search input{width:118px;flex:none}
+@media (max-width:374px){html.m .search input{width:92px}}
+@media (max-width:339px){html.m .search input{width:62px}}
+html.m .search input{font-size:16px}
+html.m .bell{width:42px;flex:none}html.m .bell i{top:11px;right:12px}
+html.m .user{padding:0 4px;flex:none}
+html.m .user > span:not(.av),html.m .user > svg{display:none!important}
+html.m .notif{left:8px!important;right:8px!important;width:auto!important;top:calc(60px + env(safe-area-inset-top,0px))!important;border-radius:18px!important;padding:8px 8px 10px!important}
+html.m .notif button{padding:12px 8px!important}
+html.m #pv-user{left:8px!important;right:8px!important;width:auto!important;max-width:none!important;top:calc(60px + env(safe-area-inset-top,0px))!important;border-radius:18px!important;transform-origin:calc(100% - 30px) 0!important}
+/* shell + bottom tab bar */
+html.m .shell{left:0;right:0;top:calc(62px + env(safe-area-inset-top,0px));bottom:0;border-radius:22px 22px 0 0;flex-direction:column-reverse}
+html.m .rail{width:auto;height:calc(64px + env(safe-area-inset-bottom,0px));flex:none;flex-direction:row;justify-content:space-around;align-items:flex-start;
+  padding:8px 10px env(safe-area-inset-bottom,0px);border-right:0;border-top:1px solid var(--line);gap:0;background:rgba(14,16,18,.92);backdrop-filter:blur(14px)}
+html.m .rail .rsep,html.m .rail .grow,html.m .rail .ri[disabled],html.m .rail .rind,html.m .rtog{display:none!important}
+html.m .ri{width:72px;height:50px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+html.m .ri.on{background:none;box-shadow:none;color:#fff}
+html.m .ri.on svg{filter:drop-shadow(0 0 8px rgba(46,230,214,.8));color:var(--teal)}
+html.m .ri::after{font-size:10.5px;font-weight:500;letter-spacing:.1px;line-height:1}
+/* tab label; also neutralises the desktop hover tooltip that shares ::after */
+html.m .ri::after{content:attr(data-short);position:static;opacity:1;transform:none;background:none;box-shadow:none;padding:0;color:inherit;border-radius:0;transition:none;white-space:nowrap}
+html.m .rail[data-hl]:after,html.m .rail:after{display:none!important}
+html.m .main{min-height:0}
+html.m .screen{padding:20px 16px 28px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+html.m .screen::-webkit-scrollbar{display:none}
+html.m h1{font-size:28px;letter-spacing:-.4px}
+/* ---- overview ---- */
+html.m .ov-head{display:flex!important;flex-direction:column;align-items:stretch;gap:14px;margin-bottom:16px}
+html.m .ov-head>div:first-child,html.m .ov-head .askcard{grid-column:auto!important}
+html.m .askcard{width:100%;height:auto;min-height:72px;padding:12px 12px 12px 14px}
+html.m .askcard p{font-size:15px}
+html.m .orb{width:38px;height:38px}
+html.m .ov-grid{display:flex;flex-direction:column;gap:12px;flex:none}
+html.m .ov-grid > .card{flex:none}
+html.m .ov-grid > .card:nth-child(1){padding-bottom:18px}
+html.m .bars{padding:16px 16px 0}
+html.m .brow{grid-template-columns:22px 64px 1fr 40px;gap:8px}
+html.m .legend{padding:12px 16px 0;flex-wrap:wrap;row-gap:6px}
+html.m .gauge{height:300px}
+html.m .gauge svg.g{width:330px}
+html.m .gauge .val{font-size:56px;bottom:22px}
+html.m .ins{padding:12px 10px 14px}
+html.m .ov-grid > .card:nth-child(4){height:300px}
+html.m .ov-grid > .card:nth-child(4) .ch{flex-wrap:wrap;row-gap:10px}
+html.m .chart{left:52px;right:18px;top:104px;bottom:66px}
+html.m .ov-grid .wide{height:auto;padding-bottom:18px}
+html.m .ov-grid .wide .funnel{opacity:.38}
+html.m .stages{grid-template-columns:1fr 1fr;column-gap:14px;row-gap:14px;padding:16px 16px 0}
+html.m .stage{min-height:0}
+html.m .stage button{width:100%}
+html.m .ch{padding:16px 16px 0}
+html.m .ch h2{font-size:17px}
+/* ---- posture ---- */
+html.m #s-posture .po{flex:none;display:flex;flex-direction:column;gap:22px}
+html.m #s-posture .po-bg{inset:0;background:radial-gradient(360px 340px at 50% 240px,rgba(255,138,31,.42),transparent 72%),radial-gradient(640px 320px at 50% 0,rgba(255,138,31,.45),transparent 72%)}
+html.m #s-posture .po{position:relative;isolation:isolate}
+html.m #s-posture .po::before{content:"";position:absolute;inset:0 -16px -28px;z-index:-1;pointer-events:none;background:radial-gradient(420px 300px at 50% 470px,rgba(255,122,26,.14),transparent 72%),radial-gradient(520px 300px at 50% 72%,rgba(255,122,26,.12),transparent 70%)}
+html.m .wires,html.m .ribbons{display:none}
+html.m #s-posture .crumb{display:none}
+html.m .core{position:relative;left:auto;top:auto;transform:none;width:280px;height:280px;margin:10px auto 0;order:1}
+html.m .ball{inset:36px}
+html.m .ball b{font-size:48px}
+html.m .ball small{font-size:13px}
+html.m .side{position:static;width:auto;order:2}
+html.m .sg{margin-bottom:22px}
+html.m #side > .sg:last-of-type{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:6px}
+html.m #side > .sg:last-of-type .sc{grid-column:auto;padding:14px 12px}
+html.m #side > .sg:last-of-type .sc b{font-size:22px}
+html.m #side > .sg:last-of-type .sc small{font-size:12.5px;line-height:1.3}
+html.m .sources{position:static;width:auto;order:3}
+html.m .sources h3{margin:0 0 8px;font-size:19px}
+html.m .src{justify-content:space-between;flex-direction:row;height:46px;border-top:1px solid var(--line);color:var(--t1)}
+/* ---- findings ---- */
+html.m #s-findings .fd{flex:none;display:block}
+html.m .fl{gap:12px}
+html.m .tot .row{flex-wrap:wrap;gap:14px 16px;padding:12px 16px 0}
+html.m .tot .big{width:100%}
+html.m .tick{flex:1 1 0;min-width:0}
+html.m .tick span{font-size:12.5px}
+html.m .det{flex:none}
+html.m .det .ch{flex-wrap:wrap;row-gap:10px;padding-bottom:8px}
+html.m .fsearch{order:5;width:100%;margin-left:0;height:42px}
+html.m .fsearch input{font-size:16px}
+html.m #cols{display:none}
+html.m #exp{margin-left:auto}
+html.m .fchips{padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
+html.m .thead{display:none}
+html.m .tbody{overflow:visible}
+html.m .tr{grid-template-columns:30px minmax(0,1fr) auto;min-height:68px;column-gap:6px;padding:8px 12px 8px 4px}
+html.m .tr > span:nth-child(4),html.m .tr > span:nth-child(5),html.m .tr > span:nth-child(6){display:none}
+html.m .tr > span:nth-child(2){white-space:normal;overflow:visible}
+html.m .cb{margin-left:10px}
+/* detail drawer -> full-screen sheet */
+html.m .drawer{position:fixed!important;inset:0;width:100%!important;z-index:55;transform:translateY(100%);transition:transform .45s var(--ease);visibility:hidden}
+html.m .fd.open .drawer{transform:none;visibility:visible}
+html.m .dr{width:100%!important;border-radius:0;padding-top:env(safe-area-inset-top,0px);background-color:#121416}
+html.m .dr-h{padding:18px 16px 0}
+html.m .dr-h h2{font-size:21px}
+html.m .dtabs{margin:16px 16px 0;gap:18px;overflow-x:auto;scrollbar-width:none}
+html.m .dbody{padding:14px 12px calc(110px + env(safe-area-inset-bottom,0px))}
+html.m .flow{font-size:11px}
+html.m .dfoot{padding:14px 12px calc(14px + env(safe-area-inset-bottom,0px))}
+html.m .menu{right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+/* ---- chat ---- */
+html.m #s-chat{overflow:hidden;padding:0}
+html.m .chat-h{margin:0;padding:14px 16px;gap:10px}
+html.m .chat-h h1{font-size:22px}
+html.m .chat-h .r{gap:10px;font-size:13px}
+html.m .chat-h .r > span{display:none}
+html.m .conv{padding:16px 16px 8px}
+html.m .col,html.m .sugg,html.m .inbox{width:auto!important;max-width:none}
+html.m .sugg{margin:0 12px 8px}
+html.m .inbox{margin:0 12px calc(12px + env(safe-area-inset-bottom,0px) * 0)}
+html.m .qa{width:auto!important;max-width:none!important;margin-left:12px!important;margin-right:12px!important;overflow-x:auto;flex-wrap:nowrap!important;scrollbar-width:none}
+html.m .qa::-webkit-scrollbar{display:none}
+html.m .qa > *{flex:none}
+html.m .srcs{flex-wrap:nowrap!important;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:2px 0;-webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);mask-image:linear-gradient(90deg,#000 86%,transparent)}
+html.m .srcs::-webkit-scrollbar{display:none}
+html.m .srcs > *{flex:none;white-space:nowrap}
+html.m .inrow input{font-size:16px}
+html.m .ubub{max-width:86%}
+html.m .ctxcard{max-width:none;width:100%}
+html.m .ctxwrap{max-width:86%;align-self:flex-end}
+html.m .ctxwrap:before{left:10px;right:-4px}
+html.m .ans .body{padding-left:12px}
+/* toast above the tab bar */
+html.m .toast{bottom:calc(80px + env(safe-area-inset-bottom,0px));max-width:calc(100% - 32px)}
+
+/* additions beyond the prototype: keep the expanded search and its dropdown on screen */
+html.m .search.open{width:auto}
+html.m #pv-search{left:8px!important;right:8px!important;width:auto!important;top:calc(60px + env(safe-area-inset-top,0px))!important}
+html.m #pv-attach{left:8px!important;right:8px!important;width:auto!important}
+/* the header glow is wider than a phone; clip (not hidden) so focus can't scroll the chat sideways */
+html.m #s-chat{overflow:clip}

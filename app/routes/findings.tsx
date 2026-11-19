@@ -7,6 +7,7 @@ import { TotalsCard } from "~/components/findings/TotalsCard";
 import { FEATURED_ID, FINDINGS, SEVERITIES, findingById, totals, type Finding, type Severity } from "~/data/findings";
 import type { FindingsFilter } from "~/data/overview";
 import { useFindingsState } from "~/lib/findings-store";
+import { isMobileLayout } from "~/components/shell/Stage";
 import { prefersReducedMotion, useEntered } from "~/lib/motion";
 
 export function meta({}: Route.MetaArgs) {
@@ -74,7 +75,8 @@ export default function Findings() {
   if (selected) shown.current = selected;
 
   useEffect(() => {
-    if (autoOpened || openId) {
+    // Phones: the drawer is a full-screen sheet, so don't open it unasked.
+    if (autoOpened || openId || isMobileLayout()) {
       autoOpened = true;
       return;
     }
@@ -100,7 +102,7 @@ export default function Findings() {
   const listKey = [filter.sev, filter.type, filter.status].join("|");
 
   return (
-    <section className={`screen${entered ? " in" : ""}`} aria-label="Findings">
+    <section id="s-findings" className={`screen${entered ? " in" : ""}`} aria-label="Findings">
       <div className={`fd${selected ? " open" : ""}`}>
         <div className="fl">
           <h1 className="rv" style={{ marginBottom: 6 }}>Findings</h1>

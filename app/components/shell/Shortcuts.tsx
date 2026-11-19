@@ -115,36 +115,3 @@ export function Shortcuts() {
     </>
   );
 }
-
-/** "Best on a laptop or desktop" notice for windows narrower than 760px. */
-export function NarrowNotice() {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    let dismissed = false;
-    try {
-      dismissed = !!sessionStorage.getItem("np");
-    } catch {}
-    if (innerWidth < 760 && !dismissed) setShow(true);
-  }, []);
-  if (!show) return null;
-  return (
-    <div id="narrow">
-      <div>
-        <b>Best on a laptop or desktop</b>
-        This is a desktop product prototype. On a small screen it opens scaled down.
-        <br />
-        <button
-          type="button"
-          onClick={() => {
-            setShow(false);
-            try {
-              sessionStorage.setItem("np", "1");
-            } catch {}
-          }}
-        >
-          Open anyway
-        </button>
-      </div>
-    </div>
-  );
-}

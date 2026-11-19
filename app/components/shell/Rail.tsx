@@ -1,11 +1,12 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react";
 import { NavLink, useLocation } from "react-router";
 
-type Item = { to: string; label: string; icon: ReactNode };
+type Item = { to: string; label: string; /** Tab-bar label on phones. */ short: string; icon: ReactNode };
 
 const PRIMARY: Item[] = [
   {
     to: "/",
+    short: "Overview",
     label: "Security overview",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor">
@@ -18,6 +19,7 @@ const PRIMARY: Item[] = [
   },
   {
     to: "/findings",
+    short: "Findings",
     label: "Findings",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
@@ -30,6 +32,7 @@ const PRIMARY: Item[] = [
 const SECONDARY: Item[] = [
   {
     to: "/posture",
+    short: "Posture",
     label: "Security posture center",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
@@ -40,6 +43,7 @@ const SECONDARY: Item[] = [
   },
   {
     to: "/chat",
+    short: "AI Chat",
     label: "AI chat",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor">
@@ -56,6 +60,7 @@ function RailLink({ item }: { item: Item }) {
       to={item.to}
       end={item.to === "/"}
       aria-label={item.label}
+      data-short={item.short}
       className={({ isActive }) => `ri${isActive ? " on" : ""}`}
     >
       {item.icon}

@@ -11,8 +11,17 @@ const PAD_X = 24;
 const RIPPLE =
   ".ri,.irow,.brow,.stage a,.tabs button,.askcard,.pill.bell,.ib,.tr,.btn,.chip,.dtabs button,.menu button,.sc,.notif button";
 
+/** Below this width the app switches to the phone layout (html.m) instead of scaling. */
+export const MOBILE_BREAKPOINT = 760;
+
+/** True while the phone layout is active. */
+export const isMobileLayout = () =>
+  typeof document !== "undefined" && document.documentElement.classList.contains("m");
+
 /**
- * Fixed 1440×900 canvas scaled to fit the viewport (with edge padding), as in the prototype.
+ * Fixed 1440×900 canvas scaled to fit the viewport (with edge padding), as in
+ * the prototype. Below MOBILE_BREAKPOINT the canvas fills the screen and the
+ * mobile styles (html.m in prototype.css) take over.
  * Hidden until the first fit so SSR markup doesn't flash at full size.
  */
 export function Stage({ children }: { children: ReactNode }) {
@@ -21,12 +30,18 @@ export function Stage({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     const el = app.current!;
     const fit = () => {
+      const mobile = innerWidth < MOBILE_BREAKPOINT;
+      document.documentElement.classList.toggle("m", mobile);
+      el.dataset.ready = "";
+      if (mobile) {
+        el.style.transform = "";
+        return;
+      }
       const s = Math.max(
         0.1,
         Math.min((innerWidth - 2 * PAD_X) / W, (innerHeight - 2 * PAD_Y) / H),
       );
       el.style.transform = `translate(-50%, -50%) scale(${s})`;
-      el.dataset.ready = "";
     };
     fit();
     addEventListener("resize", fit);
