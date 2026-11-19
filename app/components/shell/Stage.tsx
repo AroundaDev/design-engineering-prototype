@@ -1,11 +1,9 @@
 import { useLayoutEffect, useEffect, useRef, type ReactNode } from "react";
 import { appScale, prefersReducedMotion } from "~/lib/motion";
 
+/** Design size: the scale is chosen so the tighter viewport side matches it. */
 const W = 1440;
 const H = 900;
-/** Minimum gap between the canvas and the viewport edges, in screen px. */
-const PAD_Y = 32;
-const PAD_X = 24;
 
 /** Elements that get a tap ripple from the pointer position. */
 const RIPPLE =
@@ -19,8 +17,10 @@ export const isMobileLayout = () =>
   typeof document !== "undefined" && document.documentElement.classList.contains("m");
 
 /**
- * Fixed 1440×900 canvas scaled to fit the viewport (with edge padding), as in
- * the prototype. Below MOBILE_BREAKPOINT the canvas fills the screen and the
+ * Full-viewport canvas. The 1440×900 design is scaled so the tighter side of
+ * the viewport matches it, and the canvas grows along the other side so it
+ * fills the whole window: e.g. 1920×1080 → scale 1.2, 1600×900 layout.
+ * Below MOBILE_BREAKPOINT the canvas fills the screen unscaled and the
  * mobile styles (html.m in prototype.css) take over.
  * Hidden until the first fit so SSR markup doesn't flash at full size.
  */
@@ -34,14 +34,13 @@ export function Stage({ children }: { children: ReactNode }) {
       document.documentElement.classList.toggle("m", mobile);
       el.dataset.ready = "";
       if (mobile) {
-        el.style.transform = "";
+        el.style.transform = el.style.width = el.style.height = "";
         return;
       }
-      const s = Math.max(
-        0.1,
-        Math.min((innerWidth - 2 * PAD_X) / W, (innerHeight - 2 * PAD_Y) / H),
-      );
-      el.style.transform = `translate(-50%, -50%) scale(${s})`;
+      const s = Math.max(0.1, Math.min(innerWidth / W, innerHeight / H));
+      el.style.width = `${innerWidth / s}px`;
+      el.style.height = `${innerHeight / s}px`;
+      el.style.transform = `scale(${s})`;
     };
     fit();
     addEventListener("resize", fit);
